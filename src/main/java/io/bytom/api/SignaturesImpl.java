@@ -15,14 +15,11 @@ public class SignaturesImpl implements Signatures {
                 // Have two cases
                 switch (wc.type) {
                     case "raw_tx_signature":
-                        Template.KeyID keyID;
                         if (wc.signatures.length < wc.keys.length) {
-                            String[] newSigs = new String[wc.keys.length];
-                            wc.signatures = newSigs;
+                            wc.signatures = new String[wc.keys.length];
                         }
                         for (int j = 0; j < wc.keys.length; j++) {
-                            keyID = wc.keys[j];
-                            if (wc.signatures[j] != null || wc.signatures[j].isEmpty()) {
+                            if (wc.signatures[j] != null && wc.signatures[j].isEmpty()) {
                                 byte[] sigBytes = Signer.signFn(Hex.decode(privateKeys[j]), decodedTx.sigHash(i, txID).toString());
                                 wc.signatures[j] = Hex.toHexString(sigBytes);
                             }
@@ -39,6 +36,7 @@ public class SignaturesImpl implements Signatures {
         }
         return result;
     }
+
 
 
 }

@@ -12,6 +12,10 @@ import org.bouncycastle.jcajce.provider.digest.SHA3.DigestSHA3;
 import org.bouncycastle.util.encoders.Hex;
 import org.bouncycastle.util.encoders.HexEncoder;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -196,6 +200,29 @@ public class RawTransaction {
         return result;
     }
 
+    public byte[] hashFn(byte[] hashedInputHex, byte[] txID) {
+        SHA3.Digest256 digest256 = new SHA3.Digest256();
+        byte[] temp = new byte[hashedInputHex.length + txID.length];
+        System.arraycopy(hashedInputHex, 0, temp, 0, hashedInputHex.length);
+        System.arraycopy(txID, 0, temp, hashedInputHex.length, txID.length);
+
+//        System.out.println("temp: "+Arrays.toString(temp));
+
+//        byte[] temp2 = new byte[hashedInputHex.length + txID.length];
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        try {
+//            outputStream.write(hashedInputHex);
+//            outputStream.write(txID);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println(Arrays.toString(outputStream.toByteArray()));
+
+        byte[] result = digest256.digest(temp);
+        return result;
+    }
+
     public static void main(String[] args) throws BytomException {
 //        byte[] temp = RawTransaction.sha256("hello".getBytes());
 //        System.out.println("origin:"+Hex.toHexString("hello".getBytes()));
@@ -205,8 +232,15 @@ public class RawTransaction {
         String input = "9963265eb601df48501cc240e1480780e9ed6e0c8f18fd7dd57954068c5dfd02";
         Client client = Client.generateClient();
         RawTransaction rawTransaction = RawTransaction.decode(client, raw_tx);
+//        System.out.println("input spent_output: "+rawTransaction.inputs.get(0).spentOutputId);
+//        byte[] entryBytes = "entry:idspend1:".getBytes();
+//        byte[] spend_output_bytes = Hex.decode(rawTransaction.inputs.get(0).spentOutputId);
+//        byte[] inputHash = rawTransaction.hashFn(entryBytes, spend_output_bytes);
+//        System.out.println("hashed input: "+Hex.toHexString(inputHash));
+
 //        byte[] signedHash = rawTransaction.sigHash(rawTransaction.inputs.size()-1, tx_id);
-        byte[] signedHash = rawTransaction.signShA3Hash(input, tx_id);
+//        byte[] signedHash = rawTransaction.signShA3Hash(input, tx_id);
+        byte[] signedHash = rawTransaction.hashFn(Hex.decode(input), Hex.decode(tx_id));
         System.out.println("signedHash: "+Hex.toHexString(signedHash));
     }
 
