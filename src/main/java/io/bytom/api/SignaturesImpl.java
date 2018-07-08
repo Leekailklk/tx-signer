@@ -1,9 +1,15 @@
 package io.bytom.api;
 
+import io.bytom.common.DeriveXpub;
 import io.bytom.common.ExpandedPrivateKey;
+import io.bytom.common.NonHardenedChild;
+import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.Hex;
 
 public class SignaturesImpl implements Signatures {
+
+    public static Logger logger = Logger.getLogger(SignaturesImpl.class);
+
     @Override
     public Template generateSignatures(String[] privateKeys, Template template, RawTransaction decodedTx) {
         Template result = template;
@@ -13,7 +19,8 @@ public class SignaturesImpl implements Signatures {
                 // Have two cases
                 switch (wc.type) {
                     case "raw_tx_signature":
-                        System.out.println(wc.keys.length);
+                        logger.info("=====raw_tx_signature");
+                        logger.info("keys.length: "+wc.keys.length);
                         if (wc.signatures==null || wc.signatures.length < wc.keys.length) {
                             wc.signatures = new String[wc.keys.length];
                         }
@@ -23,26 +30,30 @@ public class SignaturesImpl implements Signatures {
                                 String input = decodedTx.inputs.get(j).inputID;
                                 String tx_id = decodedTx.txID;
                                 byte[] message = decodedTx.hashFn(Hex.decode(input), Hex.decode(tx_id));
-                                String output = privateKeys[j];
-                                System.out.println("privateKeys[j]: "+output);
                                 byte[] sig = new byte[64];
                                 try {
-                                    //d62fa1868b9b00ac40026e19ba094d011a323ce4d1356cc3d775927ec432ae41d25398bc65c39e688fcabab7109eb85a8c5e71ebf37e319dcb6c10f84fbf1408
-//                                    sig = Signer.sign(privateKeys[j], Hex.toHexString(message));
-                                    String publicKey = wc.keys[j].xpub;
-                                    byte[] hexPublicKey = Hex.decode(publicKey);
+//                                    String publicKey = wc.keys[j].xpub;
+//                                    byte[] hexPublicKey = Hex.decode(publicKey);
                                     byte[] privateKey = Hex.decode(privateKeys[j]);
-                                    byte[] expandedPrv = ExpandedPrivateKey.ExpandedPrivateKey(privateKey);
-                                    System.out.println("publicKey: "+publicKey);
-                                    System.out.println("privateKey: "+Hex.toHexString(expandedPrv));
-                                    System.out.println("message: "+Hex.toHexString(message));
-                                    sig = com.google.crypto.tink.subtle.Ed25519.sign(message, hexPublicKey, expandedPrv);
-                                    System.out.println("sig google: "+Hex.toHexString(sig));
+                                    // 一级私钥推出二级私钥
+                                    String[] hpaths = wc.keys[j].derivationPath;
+                                    byte[] childXprv = NonHardenedChild.child(privateKey, hpaths);
+                                    // 一级私钥推出公钥
+                                    byte[] xpub = DeriveXpub.deriveXpub(privateKey);
+                                    // 二级私钥得到扩展私钥
+                                    byte[] expandedPrv = ExpandedPrivateKey.ExpandedPrivateKey(childXprv);
+                                    logger.info("privateKey: "+Hex.toHexString(privateKey));
+                                    logger.info("childXpriv: "+Hex.toHexString(childXprv));
+                                    logger.info("xpub: "+Hex.toHexString(xpub));
+                                    logger.info("message: "+Hex.toHexString(message));
+//                                    sig = com.google.crypto.tink.subtle.Ed25519.sign(message, xpub, expandedPrv);
+                                    sig = Signer.Ed25519InnerSign(expandedPrv, message);
+                                    logger.info("sig google: "+Hex.toHexString(sig));
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                System.out.println("sig:"+Hex.toHexString(sig));
+                                logger.info("sig:"+Hex.toHexString(sig));
                                 wc.signatures[j] = Hex.toHexString(sig);
                                 template.signingInstructions.get(i).witnessComponents[j].signatures = wc.signatures;
                             }

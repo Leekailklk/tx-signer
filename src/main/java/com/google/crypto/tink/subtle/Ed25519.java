@@ -890,7 +890,7 @@ public final class Ed25519 {
    * where l = 2^252 + 27742317777372353535851937790883648493.
    * Overwrites s in place.
    */
-  private static void reduce(byte[] s) {
+  public static void reduce(byte[] s) {
     // Observation:
     // 2^252 mod l is equivalent to -27742317777372353535851937790883648493 mod l
     // Let m = -27742317777372353535851937790883648493
@@ -1158,7 +1158,7 @@ public final class Ed25519 {
    * s[0]+256*s[1]+...+256^31*s[31] = (ab+c) mod l
    * where l = 2^252 + 27742317777372353535851937790883648493.
    */
-  private static void mulAdd(byte[] s, byte[] a, byte[] b, byte[] c) {
+  public static void mulAdd(byte[] s, byte[] a, byte[] b, byte[] c) {
     // This is very similar to Ed25519.reduce, the difference in here is that it computes ab+c
     // See Ed25519.reduce for related comments.
     long a0 = 2097151 & load3(a, 0);

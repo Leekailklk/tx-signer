@@ -24,8 +24,6 @@ public class ExpandedPrivateKey {
     {
         // "457870616e64" is "Expand" hex.
         byte[] res = HMacSha512(data, Hex.decode("457870616e64"));
-        System.out.println("Expand: "+Hex.toHexString("N".getBytes()));
-        System.out.println("sum: "+ Hex.toHexString(res));
         for (int i = 0; i <= 31; i++) {
             res[i] = data[i];
         }
