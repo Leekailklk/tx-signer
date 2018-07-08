@@ -124,4 +124,66 @@ public class Template {
         return Utils.serializer.toJson(this);
     }
 
+    public static Template fromJson(String json) {
+        return Utils.serializer.fromJson(json, Template.class);
+    }
+
+    public static void main(String[] args) {
+        String json = "{\n" +
+                "  \"allow_additional_actions\": false,\n" +
+                "  \"local\": true,\n" +
+                "  \"raw_transaction\": \"07010000020161015fb6a63a3361170afca03c9d5ce1f09fe510187d69545e09f95548b939cd7fffa3ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80fc93afdf01000116001426bd1b851cf6eb8a701c20c184352ad8720eeee90100015d015bb6a63a3361170afca03c9d5ce1f09fe510187d69545e09f95548b939cd7fffa33152a15da72be51b330e1c0f8e1c0db669269809da4f16443ff266e07cc43680c03e0101160014489a678741ccc844f9e5c502f7fac0a665bedb25010003013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80a2cfa5df0101160014948fb4f500e66d20fbacb903fe108ee81f9b6d9500013a3152a15da72be51b330e1c0f8e1c0db669269809da4f16443ff266e07cc43680dd3d01160014cd5a822b34e3084413506076040d508bb12232c70001393152a15da72be51b330e1c0f8e1c0db669269809da4f16443ff266e07cc436806301160014a3f9111f3b0ee96cbd119a3ea5c60058f506fb1900\",\n" +
+                "  \"signing_instructions\": [\n" +
+                "    {\n" +
+                "      \"position\": 0,\n" +
+                "      \"witness_components\": [\n" +
+                "        {\n" +
+                "          \"keys\": [\n" +
+                "            {\n" +
+                "              \"derivation_path\": [\n" +
+                "                \"010100000000000000\",\n" +
+                "                \"0500000000000000\"\n" +
+                "              ],\n" +
+                "              \"xpub\": \"ee9dd8affdef7e0cacd0fbbf310217c7f588156c28e414db74c27afaedd8f876cf54547a672b431ff06ee8a146207df9595638a041b55ada1a764a8b5b30bda0\"\n" +
+                "            }\n" +
+                "          ],\n" +
+                "          \"quorum\": 1,\n" +
+                "          \"signatures\": null,\n" +
+                "          \"type\": \"raw_tx_signature\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"type\": \"data\",\n" +
+                "          \"value\": \"62a73b6b7ffe52b6ad782b0e0efdc8309bf2f057d88f9a17d125e41bb11dbb88\"\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"position\": 1,\n" +
+                "      \"witness_components\": [\n" +
+                "        {\n" +
+                "          \"keys\": [\n" +
+                "            {\n" +
+                "              \"derivation_path\": [\n" +
+                "                \"010100000000000000\",\n" +
+                "                \"0600000000000000\"\n" +
+                "              ],\n" +
+                "              \"xpub\": \"ee9dd8affdef7e0cacd0fbbf310217c7f588156c28e414db74c27afaedd8f876cf54547a672b431ff06ee8a146207df9595638a041b55ada1a764a8b5b30bda0\"\n" +
+                "            }\n" +
+                "          ],\n" +
+                "          \"quorum\": 1,\n" +
+                "          \"signatures\": null,\n" +
+                "          \"type\": \"raw_tx_signature\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "          \"type\": \"data\",\n" +
+                "          \"value\": \"ba5a63e7416caeb945eefc2ce874f40bc4aaf6005a1fc792557e41046f7e502f\"\n" +
+                "        }\n" +
+                "      ]\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        Template template = Template.fromJson(json);
+        System.out.println(template.toJson());
+    }
+
 }

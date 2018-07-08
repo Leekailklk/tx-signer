@@ -21,7 +21,7 @@ public class Signer {
     public static byte[] signFn(byte[] privateKey, String message) {
         EdDSAParameterSpec spec = EdDSANamedCurveTable.getByName(EdDSANamedCurveTable.ED_25519);
         Signature sgr = null;
-        byte[] result = new byte[0];
+        byte[] result = null;
 
         try {
             sgr = new EdDSAEngine(MessageDigest.getInstance(spec.getHashAlgorithm()));
@@ -48,7 +48,7 @@ public class Signer {
             throw new Exception("ed25519: bad private key length: " + PrivateKeySize);
         }
         // need pre-32 byte
-        byte[] rootPriv = Hex.decode(privateKey.substring(0,64));
+        byte[] rootPriv = Hex.decode(privateKey.substring(0, privateKey.length() / 2));
 
         byte[] sigResult = signFn(rootPriv, message);
         return Hex.toHexString(sigResult);
@@ -96,12 +96,23 @@ public class Signer {
 //
 //        boolean result = Signer.verifyFn(rootPublic, "hello", sigResult);
 //        System.out.println(result);
-        String privateKey = "d343266054d9c8b175d85c755a87b77d44295c5c7e5afb56c5c2efba19d882ae6ddbc4126fcb632d192d67006185b1ce77f1614db167072e0b3cae1f8824cd1a";
-        String publicKey = "6ddbc4126fcb632d192d67006185b1ce77f1614db167072e0b3cae1f8824cd1a";
-        String message = "hello";
+        //test message hello
+//        String privateKey = "d343266054d9c8b175d85c755a87b77d44295c5c7e5afb56c5c2efba19d882ae6ddbc4126fcb632d192d67006185b1ce77f1614db167072e0b3cae1f8824cd1a";
+//        String publicKey = "6ddbc4126fcb632d192d67006185b1ce77f1614db167072e0b3cae1f8824cd1a";
+//        String message = "hello";
+//        String sig = Signer.sign(privateKey, message);
+        //e6f8002bd065c46ddca43dda3f8689c33729727c30dfa98c9f7fc7bbfd09764f58d01147d288303ca709ec2881b05f01a024e0c8fd9052f2cdf52504fc353101
+//        System.out.println("sig:"+sig);
+//        boolean res = Signer.verify(publicKey, message, sig);
+//        System.out.println(res);
+        //test message hello
+        String privateKey = "e8dc6604ae17fcdbee1738855045f0c27a3dc1e6b94d15447a1a1bac86298a522d888be373656a46fb3f6f20b326404d4bf878cd39a126822524724260954494";
+//        String publicKey = "6ddbc4126fcb632d192d67006185b1ce77f1614db167072e0b3cae1f8824cd1a";
+        String message = "31b4fa69c6ab46c6523bd7863e9444697b119054c3cec734915896f5a2a13b30";
         String sig = Signer.sign(privateKey, message);
-        System.out.println("sig:"+sig);
-        boolean res = Signer.verify(publicKey, message, sig);
-        System.out.println(res);
+        //e6f8002bd065c46ddca43dda3f8689c33729727c30dfa98c9f7fc7bbfd09764f58d01147d288303ca709ec2881b05f01a024e0c8fd9052f2cdf52504fc353101
+        System.out.println("sig:" + sig);
+//        boolean res = Signer.verify(publicKey, message, sig);
+//        System.out.println(res);
     }
 }

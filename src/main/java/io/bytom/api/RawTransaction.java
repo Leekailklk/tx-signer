@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 public class RawTransaction {
+
+    @SerializedName("tx_id")
+    public String txID;
     /**
      * version
      */
@@ -70,6 +73,8 @@ public class RawTransaction {
 
     public static class AnnotatedInput {
 
+        @SerializedName("input_id")
+        public String inputID;
         /**
          * address
          */
@@ -241,6 +246,7 @@ public class RawTransaction {
 //        byte[] signedHash = rawTransaction.sigHash(rawTransaction.inputs.size()-1, tx_id);
 //        byte[] signedHash = rawTransaction.signShA3Hash(input, tx_id);
         byte[] signedHash = rawTransaction.hashFn(Hex.decode(input), Hex.decode(tx_id));
+        //8d2bb534c819464472a94b41cea788e97a2c9dae09a6cb3b7024a44ce5a27835
         System.out.println("signedHash: "+Hex.toHexString(signedHash));
     }
 
