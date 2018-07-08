@@ -89,15 +89,15 @@ public class SignaturesImplTest {
     public void testSignLocal() throws BytomException {
         String[] privates = new String[1];
 //        privates[0] = "28c1fb11f4cfc59417175fdb5e147a6475af0320664b5cd10daf799e67268a522c42a052a728cdaddcb453785d06e54b0ffc8775b46eb320ad96e046e69ad288";
-        String derivedXprv = "e8dc6604ae17fcdbee1738855045f0c27a3dc1e6b94d15447a1a1bac86298a522d888be373656a46fb3f6f20b326404d4bf878cd39a126822524724260954494";
+        String derivedXprv = "e8c0965af60563c4cabcf2e947b1cd955c4f501eb946ffc8c3447e5ec8a6335398a3720b3f96077fa187fdde48fe7dc293984b196f5e292ef8ed78fdbd8ed954";
         privates[0] = derivedXprv;
 
-        String raw_tx = "0701dfd5c8d505010161015fe54b8d98246bc9d0cfb38849b48aef4e68d0bc44fde26b95f80ff1bff2c3dfc8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80d0dbc3f4020101160014e183d88279d1b8d503a5d01e617d0c9da9ae54c5010002013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9894d2b0f40201160014c9befb53dc3d040b7e475c4d6d42d411f261830e00013affffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe80701160014613908c28df499e3aa04e033100efaa24ca8fd0100";
+        String raw_tx = "0701dfd5c8d505010161015f0434bc790dbb3746c88fd301b9839a0f7c990bb8bdc96881d17bc2fb47525ad8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80d0dbc3f4020101160014f54622eeb837e39d359f7530b6fbbd7256c9e73d010002013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8c98d2b0f402011600144453a011caf735428d0291d82b186e976e286fc100013afffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff40301160014613908c28df499e3aa04e033100efaa24ca8fd0100";
         Client client = Client.generateClient();
         RawTransaction rawTransaction = RawTransaction.decode(client, raw_tx);
 
         String json = "{\n" +
-                "        \"raw_transaction\": \"0701dfd5c8d505010161015fe54b8d98246bc9d0cfb38849b48aef4e68d0bc44fde26b95f80ff1bff2c3dfc8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80d0dbc3f4020101160014e183d88279d1b8d503a5d01e617d0c9da9ae54c5010002013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff9894d2b0f40201160014c9befb53dc3d040b7e475c4d6d42d411f261830e00013affffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe80701160014613908c28df499e3aa04e033100efaa24ca8fd0100\",\n" +
+                "        \"raw_transaction\": \"0701dfd5c8d505010161015f0434bc790dbb3746c88fd301b9839a0f7c990bb8bdc96881d17bc2fb47525ad8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80d0dbc3f4020101160014f54622eeb837e39d359f7530b6fbbd7256c9e73d010002013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8c98d2b0f402011600144453a011caf735428d0291d82b186e976e286fc100013afffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff40301160014613908c28df499e3aa04e033100efaa24ca8fd0100\",\n" +
                 "        \"signing_instructions\": [\n" +
                 "            {\n" +
                 "                \"position\": 0,\n" +
@@ -107,9 +107,9 @@ public class SignaturesImplTest {
                 "                        \"quorum\": 1,\n" +
                 "                        \"keys\": [\n" +
                 "                            {\n" +
-                "                                \"xpub\": \"ba15a4690a34e0a6f8aeabadcbdee0442d76143de0a868a9e47fa386fd86a1302c42a052a728cdaddcb453785d06e54b0ffc8775b46eb320ad96e046e69ad288\",\n" +
+                "                                \"xpub\": \"d9c7b41f030a398dada343096040c675be48278046623849977cb0fd01d395a51c487e8174ffc0cfa76c3be6833111a9b8cd94446e37a76ee18bb21a7d6ea66b\",\n" +
                 "                                \"derivation_path\": [\n" +
-                "                                    \"010300000000000000\",\n" +
+                "                                    \"010400000000000000\",\n" +
                 "                                    \"0100000000000000\"\n" +
                 "                                ]\n" +
                 "                            }\n" +
@@ -118,7 +118,7 @@ public class SignaturesImplTest {
                 "                    },\n" +
                 "                    {\n" +
                 "                        \"type\": \"data\",\n" +
-                "                        \"value\": \"c2b83ad98d86af9a830da8f38471837e08de9b508eb6dea887855b6c6d6c47b7\"\n" +
+                "                        \"value\": \"5024b9d7cdfe9b3ece98bc06111e06dd79d425411614bfbb473d07ca44795612\"\n" +
                 "                    }\n" +
                 "                ]\n" +
                 "            }\n" +

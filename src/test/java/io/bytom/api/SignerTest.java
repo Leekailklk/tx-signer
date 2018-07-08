@@ -2,6 +2,7 @@ package io.bytom.api;
 
 import com.google.crypto.tink.proto.Ed25519;
 import com.google.crypto.tink.subtle.Ed25519Sign;
+import io.bytom.common.ExpandedPrivateKey;
 import org.bouncycastle.util.encoders.Hex;
 import org.junit.Test;
 
@@ -113,14 +114,17 @@ public class SignerTest {
 
     @Test
     public void testEd25519SignPublicPrivate() throws GeneralSecurityException {
-        String privateKey = "e8dc6604ae17fcdbee1738855045f0c27a3dc1e6b94d15447a1a1bac86298a52eafea94c28ae0c9f1ebd4b62cb611f165f67ec8c41863dcfcfe86f3a57517e23";
-        String publicKey = "ba15a4690a34e0a6f8aeabadcbdee0442d76143de0a868a9e47fa386fd86a1302c42a052a728cdaddcb453785d06e54b0ffc8775b46eb320ad96e046e69ad288";
-        String message = "31b4fa69c6ab46c6523bd7863e9444697b119054c3cec734915896f5a2a13b30";
+        String privateKey = "e8c0965af60563c4cabcf2e947b1cd955c4f501eb946ffc8c3447e5ec8a6335398a3720b3f96077fa187fdde48fe7dc293984b196f5e292ef8ed78fdbd8ed954";
+        String publicKey = "d9c7b41f030a398dada343096040c675be48278046623849977cb0fd01d395a51c487e8174ffc0cfa76c3be6833111a9b8cd94446e37a76ee18bb21a7d6ea66b";
+        String message = "02eda3cd8d1b0efaf7382af6ea53a429ed3ed6042998d2b4a382575248ebc922";
         byte[] hexPrivateKey = Hex.decode(privateKey);
+        byte[] expandedPrv = ExpandedPrivateKey.ExpandedPrivateKey(hexPrivateKey);
+        System.out.println("offline expandedKey: "+Hex.toHexString(expandedPrv));
+
         byte[] hexPublicKey = Hex.decode(publicKey);
         byte[] hexMessage = Hex.decode(message);
 
-        byte[] sig = com.google.crypto.tink.subtle.Ed25519.sign(hexMessage, hexPublicKey, hexPrivateKey);
+        byte[] sig = com.google.crypto.tink.subtle.Ed25519.sign(hexMessage, hexPublicKey, expandedPrv);
 
         System.out.println("tink sig: "+Hex.toHexString(sig));
     }
