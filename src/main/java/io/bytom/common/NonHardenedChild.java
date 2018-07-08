@@ -20,8 +20,17 @@ public class NonHardenedChild {
     }
 
     public static byte[] child(String hpath, String hxprv, String hxpub) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
-        String dataStr = "N"+hxpub.substring(0, hxpub.length()/2)+hpath;
-        byte[] data = dataStr.getBytes();
+//        String dataStr = "N"+hxpub.substring(0, hxpub.length()/2)+hpath;
+//        byte[] data = Hex.decode(Hex.toHexString(dataStr.getBytes()));
+        int dataLength = "N".getBytes().length+hxpub.getBytes().length/2+hpath.getBytes().length;
+        byte[] data = new byte[dataLength];
+        data[0] = "N".getBytes()[0];
+        for (int i=1;i<hxpub.getBytes().length/2+1;i++) {
+            data[i] = hxpub.getBytes()[i];
+        }
+        for (int i=hxpub.getBytes().length/2+1;i<dataLength;i++) {
+            data[i] = hpath.getBytes()[i-hxpub.getBytes().length/2-1];
+        }
         String keyStr = hxpub.substring(hxpub.length()/2, hxpub.length());
         byte[] key = Hex.decode(keyStr);
         byte[] res = HMacSha512(data, key);
