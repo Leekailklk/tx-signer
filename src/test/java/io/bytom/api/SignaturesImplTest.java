@@ -149,4 +149,65 @@ public class SignaturesImplTest {
         logger.info("result raw_transaction: " + result.toJson());
         // success to submit transaction
     }
+    @Test
+    // 使用 SDK 来构造 Template 对象参数, 多签, 多输入
+    public void testSignMultiKeysMultiInputs() throws BytomException {
+        Client client = Client.generateClient();
+
+        String asset_id = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+        String address = "sm1qvyus3s5d7jv782syuqe3qrh65fx23lgpzf33em";
+        // build transaction obtain a Template object
+        Template template = new Transaction.Builder()
+                .setTtl(10)
+                .addAction(
+                        new Transaction.Action.SpendFromAccount()
+                                .setAccountId("0G1RPP6OG0A06")
+                                .setAssetId(asset_id)
+                                .setAmount(40000000)
+                )
+                .addAction(
+                        new Transaction.Action.SpendFromAccount()
+                                .setAccountId("0G1RPP6OG0A06")
+                                .setAssetId(asset_id)
+                                .setAmount(300000000)
+                )
+                .addAction(
+                        new Transaction.Action.SpendFromAccount()
+                                .setAccountId("0G1Q6V1P00A02")
+                                .setAssetId(asset_id)
+                                .setAmount(40000000)
+                )
+                .addAction(
+                        new Transaction.Action.SpendFromAccount()
+                                .setAccountId("0G1Q6V1P00A02")
+                                .setAssetId(asset_id)
+                                .setAmount(300000000)
+                )
+                .addAction(
+                        new Transaction.Action.ControlWithAddress()
+                                .setAddress(address)
+                                .setAssetId(asset_id)
+                                .setAmount(60000000)
+                ).build(client);
+        logger.info("template: " + template.toJson());
+        // use Template object's raw_transaction id to decode raw_transaction obtain a RawTransaction object
+        RawTransaction decodedTx = RawTransaction.decode(client, template.rawTransaction);
+        logger.info("decodeTx: " + decodedTx.toJson());
+        // need a private key array
+        String[] privateKeys = new String[]{"08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a436247976253c8e29e961041ad8dfad9309744255364323163837cbef2483b4f67",
+                                            "40c821f736f60805ad59b1fea158762fa6355e258601dfb49dda6f672092ae5adf072d5cab2ceaaa0d68dd3fe7fa04869d95afed8c20069f446a338576901e1b",
+                                            "08bdbd6c22856c5747c930f64d0e5d58ded17c4473910c6c0c3f94e485833a436247976253c8e29e961041ad8dfad9309744255364323163837cbef2483b4f67"};
+        logger.info("private key 1:" + privateKeys[0]);
+        logger.info("private key 2:" + privateKeys[1]);
+        // call offline sign method to obtain a basic offline signed template
+        Signatures signatures = new SignaturesImpl();
+        Template basicSigned = signatures.generateSignatures(privateKeys, template, decodedTx);
+        logger.info("basic signed raw: " + basicSigned.toJson());
+        // call sign transaction api to calculate whole raw_transaction id
+        // sign password is None or another random String
+        Template result = new Transaction.SignerBuilder().sign(client,
+                basicSigned, "");
+        logger.info("result raw_transaction: " + result.toJson());
+        // success to submit transaction
+    }
 }
