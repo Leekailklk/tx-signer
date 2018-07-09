@@ -1,5 +1,7 @@
 # tx_signer
 
+Java implementation of signing transaction offline to bytomd.
+
 ## Pre
 
 #### Get the source code

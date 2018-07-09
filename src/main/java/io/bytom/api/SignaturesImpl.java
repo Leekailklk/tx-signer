@@ -2,6 +2,7 @@ package io.bytom.api;
 
 import io.bytom.common.DeriveXpub;
 import io.bytom.common.ExpandedPrivateKey;
+import io.bytom.common.FindDst;
 import io.bytom.common.NonHardenedChild;
 import org.apache.log4j.Logger;
 import org.bouncycastle.util.encoders.Hex;
@@ -26,15 +27,16 @@ public class SignaturesImpl implements Signatures {
                         }
                         for (int j = 0; j < wc.keys.length; j++) {
                             if (wc.signatures[j] == null || wc.signatures[j].isEmpty()) {
-                                //byte[] sigBytes = Signer.signFn(Hex.decode(privateKeys[j]), decodedTx.sigHash(i, txID).toString());
                                 String input = decodedTx.inputs.get(j).inputID;
                                 String tx_id = decodedTx.txID;
                                 byte[] message = decodedTx.hashFn(Hex.decode(input), Hex.decode(tx_id));
                                 byte[] sig = new byte[64];
                                 try {
-//                                    String publicKey = wc.keys[j].xpub;
-//                                    byte[] hexPublicKey = Hex.decode(publicKey);
-                                    byte[] privateKey = Hex.decode(privateKeys[j]);
+                                    String publicKey = wc.keys[j].xpub;
+                                    // 多签情况下，找到xpub对应的private key的下标 dst
+                                    int dst = FindDst.find(privateKeys, publicKey);
+                                    //一级私钥
+                                    byte[] privateKey = Hex.decode(privateKeys[dst]);
                                     // 一级私钥推出二级私钥
                                     String[] hpaths = wc.keys[j].derivationPath;
                                     byte[] childXprv = NonHardenedChild.child(privateKey, hpaths);

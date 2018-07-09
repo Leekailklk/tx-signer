@@ -48,7 +48,7 @@ public class NonHardenedChild {
         byte[] key = Hex.decode(hkey);
         //end build key
         byte[] res = HMacSha512(data, key);
-        System.out.println("1. res: "+Hex.toHexString(res));
+//        System.out.println("1. res: "+Hex.toHexString(res));
         //begin operate res[:32]
         byte[] f = new byte[res.length/2];
         for (int i = 0; i < res.length/2; i++) {
@@ -59,7 +59,7 @@ public class NonHardenedChild {
             res[i] = f[i];
         }
         //end operate res[:32]
-        System.out.println("2. res: "+Hex.toHexString(res));
+//        System.out.println("2. res: "+Hex.toHexString(res));
 
         //begin operate res[:32] again
         int carry = 0;
@@ -71,7 +71,7 @@ public class NonHardenedChild {
             res[i] = (byte)sum;
             carry = sum >> 8;
         }
-        System.out.println("3. res: "+Hex.toHexString(res));
+//        System.out.println("3. res: "+Hex.toHexString(res));
 
         if ((sum >> 8) != 0) {
             System.err.println("sum does not fit in 256-bit int");
