@@ -114,6 +114,8 @@ Single-key Example:
 
 Multi-keys Example:
 
+> Need an account has two or more keys.
+
 ```java
 @Test
     // 使用 SDK 来构造 Template 对象参数, 多签
@@ -123,6 +125,7 @@ Multi-keys Example:
         String asset_id = "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
         String address = "sm1qvyus3s5d7jv782syuqe3qrh65fx23lgpzf33em";
         // build transaction obtain a Template object
+        // account 0G1RPP6OG0A06 has two keys
         Template template = new Transaction.Builder()
                 .setTtl(10)
                 .addAction(
