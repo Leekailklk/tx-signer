@@ -17,6 +17,7 @@ public class SignaturesImpl implements Signatures {
         for (int i = 0; i < template.signingInstructions.size(); i++) {
             Template.SigningInstruction sigIns = template.signingInstructions.get(i);
             for (Template.WitnessComponent wc : sigIns.witnessComponents) {
+
                 // Have two cases
                 switch (wc.type) {
                     case "raw_tx_signature":
@@ -25,11 +26,13 @@ public class SignaturesImpl implements Signatures {
                         if (wc.signatures==null || wc.signatures.length < wc.keys.length) {
                             wc.signatures = new String[wc.keys.length];
                         }
+                        // 一个input对应一个Template.WitnessComponent
+                        String input = decodedTx.inputs.get(sigIns.position).inputID;
+                        String tx_id = decodedTx.txID;
+                        byte[] message = decodedTx.hashFn(Hex.decode(input), Hex.decode(tx_id));
                         for (int j = 0; j < wc.keys.length; j++) {
                             if (wc.signatures[j] == null || wc.signatures[j].isEmpty()) {
-                                String input = decodedTx.inputs.get(j).inputID;
-                                String tx_id = decodedTx.txID;
-                                byte[] message = decodedTx.hashFn(Hex.decode(input), Hex.decode(tx_id));
+
                                 byte[] sig = new byte[64];
                                 try {
                                     String publicKey = wc.keys[j].xpub;
