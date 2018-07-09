@@ -16,7 +16,7 @@ $ git clone https://github.com/Bytom/bytom.git $GOPATH/src/github.com/bytom
 $ git checkout dev-tx
 ```
 
-> Why need dev-tx? Because you could call decode transaction api from dev-tx branch and obtain tx_id and some inputs ids.
+**Why need dev-tx? Because you could call decode transaction api from dev-tx branch and obtain tx_id and some inputs ids.**
 
 #### Build
 
@@ -28,7 +28,7 @@ $ make bytomcli  # build bytomcli
 
 When successfully building the project, the `bytom` and `bytomcli` binary should be present in `cmd/bytomd` and `cmd/bytomcli` directory, respectively.
 
-### Initialize
+#### Initialize
 
 First of all, initialize the node:
 
@@ -37,13 +37,31 @@ $ cd ./cmd/bytomd
 $ ./bytomd init --chain_id solonet
 ```
 
-### launch
+#### launch
 
 ```
 $ ./bytomd node --mining
 ```
 
 ## Usage
+
+#### Build jar
+
+1. first get source code
+
+   ```
+   git clone https://github.com/successli/tx_signer.git
+   ```
+
+2. get jar package
+
+   ```
+   $ mvn assembly:assembly -Dmaven.test.skip=true
+   ```
+
+   You can get a jar with dependencies, and you can use it in your project.
+
+#### Test cases
 
 Need 3 Parameters:
 
@@ -167,4 +185,3 @@ Multi-keys Example:
         // success to submit transaction
     }
 ```
-
