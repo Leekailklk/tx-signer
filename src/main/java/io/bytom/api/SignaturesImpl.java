@@ -9,7 +9,7 @@ import org.bouncycastle.util.encoders.Hex;
 
 public class SignaturesImpl implements Signatures {
 
-    public static Logger logger = Logger.getLogger(SignaturesImpl.class);
+    private static Logger logger = Logger.getLogger(SignaturesImpl.class);
 
     @Override
     public Template generateSignatures(String[] privateKeys, Template template, RawTransaction decodedTx) {
@@ -60,7 +60,7 @@ public class SignaturesImpl implements Signatures {
                                 }
                                 logger.info("sig:"+Hex.toHexString(sig));
                                 wc.signatures[j] = Hex.toHexString(sig);
-                                template.signingInstructions.get(i).witnessComponents[j].signatures = wc.signatures;
+                                result.signingInstructions.get(i).witnessComponents[j].signatures = wc.signatures;
                             }
 
                         }
@@ -73,7 +73,7 @@ public class SignaturesImpl implements Signatures {
                 }
             }
         }
-        return template;
+        return result;
     }
 
 

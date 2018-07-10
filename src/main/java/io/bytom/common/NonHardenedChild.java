@@ -11,7 +11,7 @@ import java.security.SignatureException;
 
 public class NonHardenedChild {
 
-    public static byte[] HMacSha512(byte[] data, byte[] key)
+    private static byte[] HMacSha512(byte[] data, byte[] key)
             throws NoSuchAlgorithmException, InvalidKeyException {
         SecretKeySpec signingKey = new SecretKeySpec(key, "HmacSHA512");
         Mac mac = Mac.getInstance("HmacSHA512");
