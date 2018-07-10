@@ -21,4 +21,102 @@ public class RawTransactionTest {
         //         8d2bb534c819464472a94b41cea788e97a2c9dae09a6cb3b7024a44ce5a27835
     }
 
+    @Test
+    public void testFromJson() {
+//        String raw_tx = "0701dfd5c8d505010161015f0434bc790dbb3746c88fd301b9839a0f7c990bb8bdc96881d17bc2fb47525ad8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80d0dbc3f4020101160014f54622eeb837e39d359f7530b6fbbd7256c9e73d010002013effffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8c98d2b0f402011600144453a011caf735428d0291d82b186e976e286fc100013afffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff40301160014613908c28df499e3aa04e033100efaa24ca8fd0100";
+        String rawTxJson = "{\n" +
+                "        \"tx_id\": \"88367f8df0e3bbb0027b1133b3de36ab779e26af00fc256bde7228c9727d20ef\",\n" +
+                "        \"version\": 1,\n" +
+                "        \"size\": 236,\n" +
+                "        \"time_range\": 1521625823,\n" +
+                "        \"inputs\": [\n" +
+                "            {\n" +
+                "                \"type\": \"spend\",\n" +
+                "                \"asset_id\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\n" +
+                "                \"asset_definition\": {},\n" +
+                "                \"amount\": 100000000000,\n" +
+                "                \"control_program\": \"0014f54622eeb837e39d359f7530b6fbbd7256c9e73d\",\n" +
+                "                \"address\": \"sm1q74rz9m4cxl3e6dvlw5ctd7aawftvneeaqsuq3v\",\n" +
+                "                \"spent_output_id\": \"34d739d5020d7e92477222b652e8fbe08467f5eb03700ce2ef57752930b05ff1\",\n" +
+                "                \"input_id\": \"4ae0a25ea92e8c2749099576a234e7dfacb643597545873549c5000ba83fdd9a\"\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"outputs\": [\n" +
+                "            {\n" +
+                "                \"type\": \"control\",\n" +
+                "                \"id\": \"8a511581e2fb6986abc3be3bbd842434f642db7c56a1fc5c4c7adf93c750e9a4\",\n" +
+                "                \"position\": 0,\n" +
+                "                \"asset_id\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\n" +
+                "                \"asset_definition\": {},\n" +
+                "                \"amount\": 99959999500,\n" +
+                "                \"control_program\": \"00144453a011caf735428d0291d82b186e976e286fc1\",\n" +
+                "                \"address\": \"sm1qg3f6qyw27u659rgzj8vzkxrwjahzsm7pyjen5j\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"type\": \"control\",\n" +
+                "                \"id\": \"03b6ac529c2d1c7d422a7c063d74893e8ca2003b2b3368c27d0ede2d2f6ea3ba\",\n" +
+                "                \"position\": 1,\n" +
+                "                \"asset_id\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\n" +
+                "                \"asset_definition\": {},\n" +
+                "                \"amount\": 500,\n" +
+                "                \"control_program\": \"0014613908c28df499e3aa04e033100efaa24ca8fd01\",\n" +
+                "                \"address\": \"sm1qvyus3s5d7jv782syuqe3qrh65fx23lgpzf33em\"\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"fee\": 40000000\n" +
+                "    }";
+        RawTransaction decodedTx = RawTransaction.fromJson(rawTxJson);
+        System.out.println(decodedTx.toJson());
+    }
+
+    @Test
+    public void testFromSuccessRespon() {
+        String successRespon = "{\n" +
+                "    \"status\": \"success\",\n" +
+                "    \"data\": {\n" +
+                "        \"tx_id\": \"88367f8df0e3bbb0027b1133b3de36ab779e26af00fc256bde7228c9727d20ef\",\n" +
+                "        \"version\": 1,\n" +
+                "        \"size\": 236,\n" +
+                "        \"time_range\": 1521625823,\n" +
+                "        \"inputs\": [\n" +
+                "            {\n" +
+                "                \"type\": \"spend\",\n" +
+                "                \"asset_id\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\n" +
+                "                \"asset_definition\": {},\n" +
+                "                \"amount\": 100000000000,\n" +
+                "                \"control_program\": \"0014f54622eeb837e39d359f7530b6fbbd7256c9e73d\",\n" +
+                "                \"address\": \"sm1q74rz9m4cxl3e6dvlw5ctd7aawftvneeaqsuq3v\",\n" +
+                "                \"spent_output_id\": \"34d739d5020d7e92477222b652e8fbe08467f5eb03700ce2ef57752930b05ff1\",\n" +
+                "                \"input_id\": \"4ae0a25ea92e8c2749099576a234e7dfacb643597545873549c5000ba83fdd9a\"\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"outputs\": [\n" +
+                "            {\n" +
+                "                \"type\": \"control\",\n" +
+                "                \"id\": \"8a511581e2fb6986abc3be3bbd842434f642db7c56a1fc5c4c7adf93c750e9a4\",\n" +
+                "                \"position\": 0,\n" +
+                "                \"asset_id\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\n" +
+                "                \"asset_definition\": {},\n" +
+                "                \"amount\": 99959999500,\n" +
+                "                \"control_program\": \"00144453a011caf735428d0291d82b186e976e286fc1\",\n" +
+                "                \"address\": \"sm1qg3f6qyw27u659rgzj8vzkxrwjahzsm7pyjen5j\"\n" +
+                "            },\n" +
+                "            {\n" +
+                "                \"type\": \"control\",\n" +
+                "                \"id\": \"03b6ac529c2d1c7d422a7c063d74893e8ca2003b2b3368c27d0ede2d2f6ea3ba\",\n" +
+                "                \"position\": 1,\n" +
+                "                \"asset_id\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\n" +
+                "                \"asset_definition\": {},\n" +
+                "                \"amount\": 500,\n" +
+                "                \"control_program\": \"0014613908c28df499e3aa04e033100efaa24ca8fd01\",\n" +
+                "                \"address\": \"sm1qvyus3s5d7jv782syuqe3qrh65fx23lgpzf33em\"\n" +
+                "            }\n" +
+                "        ],\n" +
+                "        \"fee\": 40000000\n" +
+                "    }\n" +
+                "}";
+        RawTransaction decodeTx = RawTransaction.fromSuccessRespon(successRespon);
+        System.out.println(decodeTx.toJson());
+    }
+
 }

@@ -1,21 +1,16 @@
 package io.bytom.api;
 
 import com.google.gson.annotations.SerializedName;
+import io.bytom.common.ParameterizedTypeImpl;
+import io.bytom.common.SuccessRespon;
 import io.bytom.common.Utils;
 import io.bytom.exception.BytomException;
 import io.bytom.http.Client;
 import org.apache.log4j.Logger;
-import org.bouncycastle.crypto.Digest;
-import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
-import org.bouncycastle.jcajce.provider.digest.SHA3.DigestSHA3;
-import org.bouncycastle.util.encoders.Hex;
-import org.bouncycastle.util.encoders.HexEncoder;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +56,12 @@ public class RawTransaction {
 
     public static RawTransaction fromJson(String json) {
         return Utils.serializer.fromJson(json, RawTransaction.class);
+    }
+
+    public static RawTransaction fromSuccessRespon(String json) {
+        Type responType = new ParameterizedTypeImpl(SuccessRespon.class, new Class[]{RawTransaction.class});
+        SuccessRespon<RawTransaction> result = Utils.serializer.fromJson(json, responType);
+        return result.dataObject;
     }
 
     public static RawTransaction decode(Client client, String txId) throws BytomException {
