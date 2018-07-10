@@ -12,5 +12,6 @@ public class DeriveXpubTest {
         byte[] xpub = DeriveXpub.deriveXpub(Hex.decode(hxprv));
         System.out.println("hxpub: "+Hex.toHexString(xpub));
         //expected: d9c7b41f030a398dada343096040c675be48278046623849977cb0fd01d395a51c487e8174ffc0cfa76c3be6833111a9b8cd94446e37a76ee18bb21a7d6ea66b
+        //          d9c7b41f030a398dada343096040c675be48278046623849977cb0fd01d395a51c487e8174ffc0cfa76c3be6833111a9b8cd94446e37a76ee18bb21a7d6ea66b
     }
 }
