@@ -7,10 +7,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.util.Formatter;
 
 public class ExpandedPrivateKey {
-    public static byte[] HMacSha512(byte[] data, byte[] key)
+    private static byte[] HMacSha512(byte[] data, byte[] key)
             throws SignatureException, NoSuchAlgorithmException, InvalidKeyException
     {
         SecretKeySpec signingKey = new SecretKeySpec(key, "HmacSHA512");

@@ -4,17 +4,15 @@ import org.bouncycastle.util.encoders.Hex;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.ByteArrayOutputStream;
 import java.security.InvalidKeyException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
-import java.util.Arrays;
 
 public class NonHardenedChild {
 
-    public static byte[] HMacSha512(byte[] data, byte[] key)
-            throws SignatureException, NoSuchAlgorithmException, InvalidKeyException
-    {
+    private static byte[] HMacSha512(byte[] data, byte[] key)
+            throws NoSuchAlgorithmException, InvalidKeyException {
         SecretKeySpec signingKey = new SecretKeySpec(key, "HmacSHA512");
         Mac mac = Mac.getInstance("HmacSHA512");
         mac.init(signingKey);
@@ -22,44 +20,28 @@ public class NonHardenedChild {
     }
 
     public static byte[] NHchild(byte[] path, byte[] xprv, byte[] xpub) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
-//        int dataLength = 1+xpub.length/2+path.length;
-//        byte[] data = new byte[dataLength];
-        //begin build data
-//        data[0] = (byte)'N';
-//        for (int i=1;i<xpub.length/2+1;i++) {
-//            data[i] = xpub[i];
-//        }
-//        for (int i=xpub.length/2+1;i<dataLength;i++) {
-//            data[i] = path[i-xpub.length/2-1];
-//        }
-        //end build data
-        String n = Hex.toHexString("N".getBytes());
-        String hxpub = Hex.toHexString(xpub);
-        String hpath = Hex.toHexString(path);
+        // begin build data
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write('N');
+        out.write(xpub, 0, xpub.length / 2);
+        out.write(path, 0, path.length);
+        byte[] data = out.toByteArray();
+        // end build data
 
-        String hdata = n + hxpub.substring(0, hxpub.length()/2) + hpath;
-        byte[] data = Hex.decode(hdata);
-        //begin build key
-//        byte[] key = new byte[xpub.length/2];
-//        for (int i = 0; i < xpub.length/2; i++) {
-//            key[i] = xpub[i+xpub.length/2];
-//        }
-        String hkey = hxpub.substring(hxpub.length()/2, hxpub.length());
-        byte[] key = Hex.decode(hkey);
-        //end build key
+        // begin build key
+        byte[] key = new byte[xpub.length / 2];
+        System.arraycopy(xpub, xpub.length / 2, key, 0, xpub.length / 2);
+        // end build key
+
+        // doFinal()
         byte[] res = HMacSha512(data, key);
-//        System.out.println("1. res: "+Hex.toHexString(res));
+
         //begin operate res[:32]
-        byte[] f = new byte[res.length/2];
-        for (int i = 0; i < res.length/2; i++) {
-            f[i] = res[i];
-        }
+        byte[] f = new byte[res.length / 2];
+        System.arraycopy(res, 0, f, 0, res.length / 2);
         f = pruneIntermediateScalar(f);
-        for (int i = 0; i < res.length/2; i++) {
-            res[i] = f[i];
-        }
+        System.arraycopy(f, 0, res, 0, res.length / 2);
         //end operate res[:32]
-//        System.out.println("2. res: "+Hex.toHexString(res));
 
         //begin operate res[:32] again
         int carry = 0;
@@ -68,11 +50,9 @@ public class NonHardenedChild {
             int xprvInt = xprv[i] & 0xFF;
             int resInt = res[i] & 0xFF;
             sum = xprvInt + resInt + carry;
-            res[i] = (byte)sum;
+            res[i] = (byte) sum;
             carry = sum >> 8;
         }
-//        System.out.println("3. res: "+Hex.toHexString(res));
-
         if ((sum >> 8) != 0) {
             System.err.println("sum does not fit in 256-bit int");
         }
@@ -96,7 +76,6 @@ public class NonHardenedChild {
         byte[] res = xprv;
         for (int i = 0; i < hpaths.length; i++) {
             byte[] xpub = DeriveXpub.deriveXpub(res);
-//            System.out.println("xpub: "+Hex.toHexString(xpub));
             res = NonHardenedChild.NHchild(paths[i], res, xpub);
         }
         return res;

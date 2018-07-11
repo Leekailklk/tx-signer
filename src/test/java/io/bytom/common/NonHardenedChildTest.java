@@ -28,6 +28,7 @@ public class NonHardenedChildTest {
         }
         System.out.println("res: "+Hex.toHexString(res));
         //expected: e8c0965af60563c4cabcf2e947b1cd955c4f501eb946ffc8c3447e5ec8a6335398a3720b3f96077fa187fdde48fe7dc293984b196f5e292ef8ed78fdbd8ed954
+        //          e8c0965af60563c4cabcf2e947b1cd955c4f501eb946ffc8c3447e5ec8a6335398a3720b3f96077fa187fdde48fe7dc293984b196f5e292ef8ed78fdbd8ed954
     }
 
     @Test
@@ -36,5 +37,7 @@ public class NonHardenedChildTest {
         String[] hpaths = {"010400000000000000", "0100000000000000"};
         byte[] childXprv = NonHardenedChild.child(Hex.decode(hxprv), hpaths);
         System.out.println("childXprv: "+Hex.toHexString(childXprv));
+        //expected: e8c0965af60563c4cabcf2e947b1cd955c4f501eb946ffc8c3447e5ec8a6335398a3720b3f96077fa187fdde48fe7dc293984b196f5e292ef8ed78fdbd8ed954
+        //          e8c0965af60563c4cabcf2e947b1cd955c4f501eb946ffc8c3447e5ec8a6335398a3720b3f96077fa187fdde48fe7dc293984b196f5e292ef8ed78fdbd8ed954
     }
 }
