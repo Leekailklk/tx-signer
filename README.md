@@ -13,10 +13,10 @@ $ git clone https://github.com/Bytom/bytom.git $GOPATH/src/github.com/bytom
 #### git checkout
 
 ```
-$ git checkout dev-tx
+$ git checkout dev
 ```
 
-**Why need dev-tx? Because you could call decode transaction api from dev-tx branch and obtain tx_id and some inputs ids.**
+**Why need dev branch? Because you could call decode transaction api from dev branch and obtain tx_id and some inputs ids.**
 
 #### Build
 
@@ -70,7 +70,7 @@ Need 3 Parameters:
   - After call build transaction api return a Template json object. [build transaction api](https://github.com/Bytom/bytom/wiki/API-Reference#build-transaction)
   - use bytom java sdk return a Template object.
 - Raw Transaction
-  - call decode raw-transaction api from dev-tx branch. [decode raw-transaction api](https://github.com/Bytom/bytom/wiki/API-Reference#decode-raw-transaction)
+  - call decode raw-transaction api from dev branch. [decode raw-transaction api](https://github.com/Bytom/bytom/wiki/API-Reference#decode-raw-transaction)
 
 Call method:
 
